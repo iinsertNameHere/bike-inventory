@@ -20,6 +20,5 @@ public class Bike {
     private int id;
     private String brand;
     private String color;
-
-    //TODO: add other fields
+    private int numberOfGears;
 }
