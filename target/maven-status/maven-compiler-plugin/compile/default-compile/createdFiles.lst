@@ -1,0 +1,7 @@
+com/xing/bikeinventory/service/InventoryService.class
+com/xing/bikeinventory/BikeInventoryApplication.class
+com/xing/bikeinventory/model/CustomResponse_WithBikeId.class
+com/xing/bikeinventory/controller/InventoryController.class
+com/xing/bikeinventory/model/Bike$BikeBuilder.class
+com/xing/bikeinventory/model/Bike.class
+com/xing/bikeinventory/model/CustomResponse.class
