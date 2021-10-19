@@ -53,5 +53,6 @@ public class InventoryController {
         if (!service.containsBike(id))
             return new ResponseEntity(error, error.httpStatus);
         return service.getBikeById(id);
+
     }
 }
