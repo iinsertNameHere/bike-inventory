@@ -1,5 +1,7 @@
 # Coding Challenge - Bike Inventory
 
+- [x] Finished
+
 Hello and welcome to this coding challenge. In this challenge, you are tasked to build a small micro-service to handle the inventory of a bike repair shop.
 
 ## Task
