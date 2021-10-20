@@ -38,11 +38,10 @@ public class InventoryService {
         return inventory.values();
     }
 
-    public int removeBike(int bikeId) {
+    public void removeBike(int bikeId) {
         Bike bike = inventory.get(bikeId);
         inventory.remove(bikeId);
         System.out.println(String.format("Removed bike %d from inventory.", bikeId));
-        return bikeId;
     }
 
     public Bike getBikeById(int id) {
@@ -51,5 +50,9 @@ public class InventoryService {
 
     public boolean containsBike(int id) {
         return inventory.containsKey(id);
+    }
+
+    public int getCurrentBikeCount() {
+        return idCounter.get();
     }
 }
