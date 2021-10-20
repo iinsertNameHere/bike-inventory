@@ -1,9 +1,6 @@
 package com.xing.bikeinventory.controller;
 
-import com.xing.bikeinventory.model.Bike;
-import com.xing.bikeinventory.model.CustomResponse;
-import com.xing.bikeinventory.model.CustomResponse_WithBikeId;
-import com.xing.bikeinventory.model.CustomResponse_WithObject;
+import com.xing.bikeinventory.model.*;
 import com.xing.bikeinventory.service.InventoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,18 +32,17 @@ public class InventoryController {
         return new ResponseEntity<CustomResponse>(resp, resp.httpStatus);
     }
 
-    @RequestMapping(value = {"/api/bike", "/api/bike/{id}"}, method = RequestMethod.GET)
-    public ResponseEntity<CustomResponse> showAllBikes(@PathVariable(required = false) Optional<Integer> id) {
-        if (id.isEmpty()) {
-            var resp = new CustomResponse_WithObject<Collection<Bike>>(HttpStatus.OK, String.format("Bike Count: %d", service.getCurrentBikeCount()), service.getAllBikes());
-            return new ResponseEntity<CustomResponse>(resp, resp.httpStatus);
-        }
-        // getBikeById
-        var error = new CustomResponse(HttpStatus.NOT_FOUND, String.format("No bike with id '%d' in inventory.", id.get()));
-        if (!service.containsBike(id.get()))
-            return new ResponseEntity<CustomResponse>(error, error.httpStatus);
-        var resp = new CustomResponse_WithObject<Bike>(HttpStatus.OK, String.format("Bike with id: %d", id.get()), service.getBikeById(id.get()));
-        return new ResponseEntity<CustomResponse>(resp, resp.httpStatus);
+    @RequestMapping(value = "/api/bike/{id}", method = RequestMethod.GET)
+    public ResponseEntity<RespType> getBikeById(@PathVariable(required = false) int id) {
+        var error = new CustomResponse(HttpStatus.NOT_FOUND, String.format("No bike with id '%d' in inventory.", id));
+        if (!service.containsBike(id))
+            return new ResponseEntity<>(error, error.httpStatus);
+        return new ResponseEntity<>(service.getBikeById(id), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/api/bike", method = RequestMethod.GET)
+    public Collection<Bike> showAllBikes() {
+        return service.getAllBikes();
     }
 
     @RequestMapping(value = "/api/bike/{id}", method = RequestMethod.DELETE)

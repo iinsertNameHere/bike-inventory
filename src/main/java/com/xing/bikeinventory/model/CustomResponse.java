@@ -2,7 +2,7 @@ package com.xing.bikeinventory.model;
 
 import org.springframework.http.HttpStatus;
 
-public class CustomResponse {
+public class CustomResponse implements RespType {
     public final HttpStatus httpStatus;
     public final int statusCode;
     public final String message;

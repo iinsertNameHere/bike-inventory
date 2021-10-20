@@ -16,7 +16,7 @@ import lombok.Data;
 //       .build();
 // More information here: https://projectlombok.org/features/Builder
 @Builder
-public class Bike {
+public class Bike implements RespType {
     private int id;
     private String brand;
     private String color;
