@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
 
@@ -44,14 +45,15 @@ public class InventoryController {
         var resp = new  CustomResponse_WithBikeId(HttpStatus.OK, "Removed bike from inventory.", id);
         if (!service.containsBike(id))
             return new ResponseEntity(error, error.httpStatus);
+        service.removeBike(id);
         return new ResponseEntity(resp, resp.httpStatus);
     }
 
-    @GetMapping("/bike/get")
-    public Object getBikeById(@RequestParam int id) {
-        var error = new CustomResponse(HttpStatus.BAD_REQUEST, String.format("No bike with id '%d' in inventory.", id));
+    @GetMapping("/bike")
+    public Bike getBikeById(@RequestParam int id) {
+        var error = String.format("No bike with id '%d' in inventory.", id);
         if (!service.containsBike(id))
-            return new ResponseEntity(error, error.httpStatus);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, error);
         return service.getBikeById(id);
     }
 }
