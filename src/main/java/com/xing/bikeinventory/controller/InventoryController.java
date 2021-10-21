@@ -33,11 +33,12 @@ public class InventoryController {
     }
 
     @RequestMapping(value = "/api/bike/{id}", method = RequestMethod.GET)
-    public ResponseEntity<RespType> getBikeById(@PathVariable(required = false) int id) {
+    public ResponseEntity<RespType> getBikeById(@PathVariable(required = false) String id) {
         var error = new CustomResponse(HttpStatus.NOT_FOUND, String.format("No bike with id '%d' in inventory.", id));
-        if (!service.containsBike(id))
+        var bike = service.getBikeById(id);
+        if (bike.isEmpty())
             return new ResponseEntity<>(error, error.httpStatus);
-        return new ResponseEntity<>(service.getBikeById(id), HttpStatus.OK);
+        return new ResponseEntity<>(bike.get(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/api/bike", method = RequestMethod.GET)
@@ -46,7 +47,7 @@ public class InventoryController {
     }
 
     @RequestMapping(value = "/api/bike/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<CustomResponse> removeBike(@PathVariable int id) {
+    public ResponseEntity<CustomResponse> removeBike(@PathVariable String id) {
         var error = new CustomResponse(HttpStatus.BAD_REQUEST, String.format("No bike with id '%d' in inventory.", id));
         var resp = new  CustomResponse_WithBikeId(HttpStatus.OK, "Removed bike from inventory.", id);
         if (!service.containsBike(id))

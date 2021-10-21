@@ -1,24 +1,30 @@
 package com.xing.bikeinventory.model;
 
-import lombok.Builder;
-import lombok.Data;
+import org.springframework.data.annotation.Id;
 
-// @Data is a Lombok annotation that generates Getter, Setter, toString, equals and a constructor to a class
-// More information here: https://projectlombok.org/features/Data
-@Data
-
-// @Builder lets you automatically produce the code required to have your class be instantiable with code such as:
-// Person.builder()
-//       .name("Adam Savage")
-//       .city("San Francisco")
-//       .job("Mythbusters")
-//       .job("Unchained Reaction")
-//       .build();
-// More information here: https://projectlombok.org/features/Builder
-@Builder
 public class Bike implements RespType {
-    private int id;
-    private String brand;
-    private String color;
-    private int numberOfGears;
+    
+    @Id
+    public String id;
+
+    public String brand;
+    public String color;
+    public int numberOfGears;
+    
+    public Bike() {}
+    
+    public Bike(String id, String brand, String color, int numberOfGears) {
+        this.id = id;
+        this.brand = brand;
+        this.color = color;
+        this.numberOfGears = numberOfGears;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "Bike{id=%s, brand='%s', color='%s', numberOfGears=%s}",
+                id, brand, color, numberOfGears
+        );
+    }
 }

@@ -1,58 +1,45 @@
 package com.xing.bikeinventory.service;
 
 import com.xing.bikeinventory.model.Bike;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class InventoryService {
 
     private final AtomicInteger idCounter = new AtomicInteger();
-    private final Map<Integer, Bike> inventory = new ConcurrentHashMap<>();
+    private final BikeRepository inventory;
 
-    public int addBike(String brand, String color, int numOfGears) {
-        int id = idCounter.incrementAndGet();
-        Bike bike = Bike.builder()
-                .id(id)
-                .brand(brand)
-                .color(color)
-                .numberOfGears(numOfGears)
-                .build();
+    public InventoryService(BikeRepository inventory1) {
+        this.inventory = inventory1;
+    }
 
-        inventory.put(id, bike);
+    public String addBike(String brand, String color, int numOfGears) {
+        Bike bike = new Bike(null, brand, color, numOfGears);
+
+        inventory.save(bike);
 
         System.out.println("Added new bike to inventory: " + bike);
-        return bike.getId();
+        return bike.id;
     }
 
     public Collection<Bike> getAllBikes() {
-        return inventory.values();
+        return inventory.findAll();
     }
 
-    public void removeBike(int bikeId) {
-        Bike bike = inventory.get(bikeId);
-        inventory.remove(bikeId);
-        System.out.println(String.format("Removed bike %d from inventory.", bikeId));
+    public void removeBike(String bikeId) {
+        inventory.deleteById(bikeId);
+        System.out.printf("Removed bike %s from inventory.%n", bikeId);
     }
 
-    public Bike getBikeById(int id) {
-        return inventory.get(id);
+    public Optional<Bike> getBikeById(String id) {
+        return inventory.findById(id);
     }
 
-    public boolean containsBike(int id) {
-        return inventory.containsKey(id);
-    }
-
-    public int getCurrentBikeCount() {
-        return idCounter.get();
+    public boolean containsBike(String id) {
+        return inventory.existsById(id);
     }
 }
