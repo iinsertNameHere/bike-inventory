@@ -4,14 +4,15 @@ import com.xing.bikeinventory.model.Bike;
 import com.xing.bikeinventory.model.JBike;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class InventoryService {
 
-    private final AtomicInteger idCounter = new AtomicInteger();
     private final BikeRepository inventory;
 
     public InventoryService(BikeRepository inventory1) {
@@ -49,5 +50,32 @@ public class InventoryService {
 
     public boolean containsBike(String id) {
         return inventory.existsById(id);
+    }
+
+    public List<Bike> getBikeByColor(String color) {
+        List<Bike> allBikes =  inventory.findAll();
+        List<Bike> res = new ArrayList<>();
+        for (Bike bike : allBikes) {
+            if (bike.color.equalsIgnoreCase(color.toLowerCase())) res.add(bike);
+        }
+        return res;
+    }
+
+    public List<Bike> getBikeByBrand(String brand) {
+        List<Bike> allBikes =  inventory.findAll();
+        List<Bike> res = new ArrayList<>();
+        for (Bike bike : allBikes) {
+            if (bike.brand.equalsIgnoreCase(brand.toLowerCase())) res.add(bike);
+        }
+        return res;
+    }
+
+    public List<Bike> getBikeByGears(int numOfGears) {
+        List<Bike> allBikes =  inventory.findAll();
+        List<Bike> res = new ArrayList<>();
+        for (Bike bike : allBikes) {
+            if (bike.numberOfGears == numOfGears) res.add(bike);
+        }
+        return res;
     }
 }

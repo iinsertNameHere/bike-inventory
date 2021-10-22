@@ -5,13 +5,8 @@ import com.xing.bikeinventory.service.InventoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import javax.servlet.annotation.HttpMethodConstraint;
-import java.nio.charset.Charset;
 import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 @RestController
@@ -81,5 +76,38 @@ public class InventoryController {
         }
         else
             return new ResponseEntity<>(new CustomResponse(HttpStatus.UNAUTHORIZED, "Key incorrect!"), HttpStatus.UNAUTHORIZED);
+    }
+
+    @RequestMapping(value = "/api/color/{color}", method = RequestMethod.GET)
+    public Collection<Bike> getBikesByColor(@PathVariable String color) {
+        return service.getBikeByColor(color);
+    }
+
+    @RequestMapping(value = "/api/color/{color}/count", method = RequestMethod.GET)
+    public ResponseEntity<RespType> getCountOfBikesWithColor(@PathVariable String color) {
+        var resp = new CustomResponse_WithCount(HttpStatus.OK, String.format("Count of bikes with color: '%s'", color), service.getBikeByColor(color).size());
+        return new ResponseEntity<>(resp, resp.httpStatus);
+    }
+
+    @RequestMapping(value = "/api/brand/{brand}", method = RequestMethod.GET)
+    public Collection<Bike> getBikesByBrand(@PathVariable String brand) {
+        return service.getBikeByBrand(brand);
+    }
+
+    @RequestMapping(value = "/api/brand/{brand}/count", method = RequestMethod.GET)
+    public ResponseEntity<RespType> getCountOfBikesFromBrand(@PathVariable String brand) {
+        var resp = new CustomResponse_WithCount(HttpStatus.OK, String.format("Count of bikes from brand: '%s'", brand), service.getBikeByBrand(brand).size());
+        return new ResponseEntity<>(resp, resp.httpStatus);
+    }
+
+    @RequestMapping(value = "/api/numOfGears/{gears}", method = RequestMethod.GET)
+    public Collection<Bike> getBikesByGears(@PathVariable int gears) {
+        return service.getBikeByGears(gears);
+    }
+
+    @RequestMapping(value = "/api/numOfGears/{gears}/count", method = RequestMethod.GET)
+    public ResponseEntity<RespType> getCountOfBikesNumOfGears(@PathVariable int gears) {
+        var resp = new CustomResponse_WithCount(HttpStatus.OK, String.format("Count of bikes from brand: '%s'", gears), service.getBikeByGears(gears).size());
+        return new ResponseEntity<>(resp, resp.httpStatus);
     }
 }
