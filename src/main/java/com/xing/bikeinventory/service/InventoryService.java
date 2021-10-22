@@ -1,6 +1,7 @@
 package com.xing.bikeinventory.service;
 
 import com.xing.bikeinventory.model.Bike;
+import com.xing.bikeinventory.model.JBike;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -17,8 +18,8 @@ public class InventoryService {
         this.inventory = inventory1;
     }
 
-    public String addBike(String brand, String color, int numOfGears) {
-        Bike bike = new Bike(null, brand, color, numOfGears);
+    public String addBike(JBike newBike) {
+        Bike bike = new Bike(null, newBike.brand, newBike.color, newBike.numberOfGears);
 
         inventory.save(bike);
 
@@ -32,7 +33,14 @@ public class InventoryService {
 
     public void removeBike(String bikeId) {
         inventory.deleteById(bikeId);
-        System.out.printf("Removed bike %s from inventory.%n", bikeId);
+        System.out.printf("Removed bike '%s' from inventory.%n", bikeId);
+    }
+
+    public void removeAllBikes() {
+        for (Bike bike : inventory.findAll()) {
+            inventory.deleteById(bike.id);
+            System.out.printf("Removed bike '%s' from inventory.%n", bike.id);
+        }
     }
 
     public Optional<Bike> getBikeById(String id) {

@@ -23,7 +23,7 @@ public class Bike implements RespType {
     @Override
     public String toString() {
         return String.format(
-                "Bike{id=%s, brand='%s', color='%s', numberOfGears=%s}",
+                "Bike{id='%s', brand='%s', color='%s', numberOfGears=%s}",
                 id, brand, color, numberOfGears
         );
     }

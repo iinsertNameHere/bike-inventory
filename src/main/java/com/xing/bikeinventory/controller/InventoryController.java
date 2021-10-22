@@ -8,33 +8,45 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.annotation.HttpMethodConstraint;
+import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @RestController
 public class InventoryController {
 
     private final InventoryService service;
+    private final String pwd;
+
+    private String getSaltString(int len) {
+        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890-_";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < len) {
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        String saltStr = salt.toString();
+        return saltStr;
+    }
 
     public InventoryController(InventoryService service) {
         this.service = service;
+        this.pwd = getSaltString(18);
+        System.out.printf("API Key for this Session: '%s'\n", pwd);
     }
 
-
-    // This exposes a POST endpoint to add a new bike
-    // You can call this endpoint e.g. from your console with this command:
-    //      curl -XPOST "http://localhost:8080/bike/new?brand=XYZ+Bikes&color=Black&numOfGears=13"
-    @RequestMapping(value = "/api/bike/{brand}/{color}/{numOfGears}", method = RequestMethod.POST)
-    public ResponseEntity<CustomResponse> addBike(@PathVariable String brand, @PathVariable String color, @PathVariable int numOfGears) {
-        System.out.println("About to add a new bike: {brand=" + brand + ", color=" + color + ", numberOfGears=" + numOfGears + "}");
-        var resp = new CustomResponse_WithBikeId(HttpStatus.OK, "Added new bike to inventory.", service.addBike(brand, color, numOfGears));
+    @RequestMapping(value = "/api/bike", method = RequestMethod.POST)
+    public ResponseEntity<CustomResponse> addBike(@RequestBody JBike newBike) {
+        var resp = new CustomResponse_WithBikeId(HttpStatus.OK, "Added new bike to inventory.", service.addBike(newBike));
         return new ResponseEntity<CustomResponse>(resp, resp.httpStatus);
     }
 
     @RequestMapping(value = "/api/bike/{id}", method = RequestMethod.GET)
     public ResponseEntity<RespType> getBikeById(@PathVariable(required = false) String id) {
-        var error = new CustomResponse(HttpStatus.NOT_FOUND, String.format("No bike with id '%d' in inventory.", id));
+        var error = new CustomResponse(HttpStatus.NOT_FOUND, String.format("No bike with id '%s' in inventory.", id));
         var bike = service.getBikeById(id);
         if (bike.isEmpty())
             return new ResponseEntity<>(error, error.httpStatus);
@@ -48,11 +60,26 @@ public class InventoryController {
 
     @RequestMapping(value = "/api/bike/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<CustomResponse> removeBike(@PathVariable String id) {
-        var error = new CustomResponse(HttpStatus.BAD_REQUEST, String.format("No bike with id '%d' in inventory.", id));
+        var error = new CustomResponse(HttpStatus.BAD_REQUEST, String.format("No bike with id '%s' in inventory.", id));
         var resp = new  CustomResponse_WithBikeId(HttpStatus.OK, "Removed bike from inventory.", id);
         if (!service.containsBike(id))
             return new ResponseEntity<CustomResponse>(error, error.httpStatus);
         service.removeBike(id);
         return new ResponseEntity<CustomResponse>(resp, resp.httpStatus);
+    }
+
+    @RequestMapping(value = "/api/bike", method = RequestMethod.DELETE)
+    public ResponseEntity<CustomResponse> removeAllBikes(@RequestParam(value = "key") String sessionPwd) {
+        if (sessionPwd.equals(pwd)) {
+            if (service.getAllBikes().size() > 0) {
+                service.removeAllBikes();
+                var resp = new CustomResponse(HttpStatus.OK, "Removed all Bikes.");
+                return new ResponseEntity<>(resp, resp.httpStatus);
+            }
+            else
+                return new ResponseEntity<>(new CustomResponse(HttpStatus.OK, "No Bikes found."), HttpStatus.OK);
+        }
+        else
+            return new ResponseEntity<>(new CustomResponse(HttpStatus.UNAUTHORIZED, "Key incorrect!"), HttpStatus.UNAUTHORIZED);
     }
 }
