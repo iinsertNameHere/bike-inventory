@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class InventoryService {
@@ -44,38 +43,36 @@ public class InventoryService {
         }
     }
 
-    public Optional<Bike> getBikeById(String id) {
-        return inventory.findById(id);
-    }
-
     public boolean containsBike(String id) {
         return inventory.existsById(id);
     }
 
-    public List<Bike> getBikeByColor(String color) {
-        List<Bike> allBikes =  inventory.findAll();
-        List<Bike> res = new ArrayList<>();
-        for (Bike bike : allBikes) {
-            if (bike.color.equalsIgnoreCase(color.toLowerCase())) res.add(bike);
-        }
-        return res;
+    public Optional<Bike> getBikeById(String id) {
+        return inventory.findById(id);
     }
 
-    public List<Bike> getBikeByBrand(String brand) {
-        List<Bike> allBikes =  inventory.findAll();
-        List<Bike> res = new ArrayList<>();
-        for (Bike bike : allBikes) {
-            if (bike.brand.equalsIgnoreCase(brand.toLowerCase())) res.add(bike);
-        }
-        return res;
+    public List<Bike> getBikesByColor(String color) {
+        return inventory.findAllByColorIgnoreCase(color);
     }
 
-    public List<Bike> getBikeByGears(int numOfGears) {
-        List<Bike> allBikes =  inventory.findAll();
-        List<Bike> res = new ArrayList<>();
-        for (Bike bike : allBikes) {
-            if (bike.numberOfGears == numOfGears) res.add(bike);
-        }
-        return res;
+    public int countBikesByColor(String color) {
+        return (int) inventory.countByColorIgnoreCase(color);
     }
+
+    public List<Bike> getBikesByBrand(String brand) {
+        return inventory.findAllByBrandIgnoreCase(brand);
+    }
+
+    public int countBikesByBrand(String brand) {
+        return (int) inventory.countByBrandIgnoreCase(brand);
+    }
+
+    public List<Bike> getBikesByNumOfGears(int numOfGears) {
+        return inventory.findAllByNumberOfGears(numOfGears);
+    }
+
+    public int countBikesByNumOfGears(int numOfGears) {
+        return (int)inventory.countByNumberOfGears(numOfGears);
+    }
+
 }

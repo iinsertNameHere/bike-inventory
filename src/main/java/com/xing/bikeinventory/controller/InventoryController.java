@@ -80,34 +80,34 @@ public class InventoryController {
 
     @RequestMapping(value = "/api/color/{color}", method = RequestMethod.GET)
     public Collection<Bike> getBikesByColor(@PathVariable String color) {
-        return service.getBikeByColor(color);
+        return service.getBikesByColor(color);
     }
 
     @RequestMapping(value = "/api/color/{color}/count", method = RequestMethod.GET)
     public ResponseEntity<RespType> getCountOfBikesWithColor(@PathVariable String color) {
-        var resp = new CustomResponse_WithCount(HttpStatus.OK, String.format("Count of bikes with color: '%s'", color), service.getBikeByColor(color).size());
+        var resp = new CustomResponse_WithCount(HttpStatus.OK, String.format("Count of bikes with color: '%s'", color), service.countBikesByColor(color));
         return new ResponseEntity<>(resp, resp.httpStatus);
     }
 
     @RequestMapping(value = "/api/brand/{brand}", method = RequestMethod.GET)
     public Collection<Bike> getBikesByBrand(@PathVariable String brand) {
-        return service.getBikeByBrand(brand);
+        return service.getBikesByBrand(brand);
     }
 
     @RequestMapping(value = "/api/brand/{brand}/count", method = RequestMethod.GET)
     public ResponseEntity<RespType> getCountOfBikesFromBrand(@PathVariable String brand) {
-        var resp = new CustomResponse_WithCount(HttpStatus.OK, String.format("Count of bikes from brand: '%s'", brand), service.getBikeByBrand(brand).size());
+        var resp = new CustomResponse_WithCount(HttpStatus.OK, String.format("Count of bikes from brand: '%s'", brand), service.countBikesByBrand(brand));
         return new ResponseEntity<>(resp, resp.httpStatus);
     }
 
     @RequestMapping(value = "/api/numOfGears/{gears}", method = RequestMethod.GET)
     public Collection<Bike> getBikesByGears(@PathVariable int gears) {
-        return service.getBikeByGears(gears);
+        return service.getBikesByNumOfGears(gears);
     }
 
     @RequestMapping(value = "/api/numOfGears/{gears}/count", method = RequestMethod.GET)
     public ResponseEntity<RespType> getCountOfBikesNumOfGears(@PathVariable int gears) {
-        var resp = new CustomResponse_WithCount(HttpStatus.OK, String.format("Count of bikes from brand: '%s'", gears), service.getBikeByGears(gears).size());
+        var resp = new CustomResponse_WithCount(HttpStatus.OK, String.format("Count of bikes from brand: '%s'", gears), service.countBikesByNumOfGears(gears));
         return new ResponseEntity<>(resp, resp.httpStatus);
     }
 }
