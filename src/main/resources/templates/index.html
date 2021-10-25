@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Bike Inventory Service</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+
+        /* Dotted border */
+        hr.dotted {
+            border-top: 3px dotted #bbb;
+        }
+    </style>
+</head>
+<body>
+<table>
+    <tr>
+        <th>_id:</th>
+        <th>Brand:</th>
+        <th>Color:</th>
+        <th>Number Of Gears:</th>
+    </tr>
+    <tr th:each="bike: ${allBikes}">
+        <th th:text="${bike.id}"></th>
+        <th th:text="${bike.brand}"></th>
+        <th th:text="${bike.color}"></th>
+        <th th:text="${bike.numberOfGears}"></th>
+    </tr>
+</table>
+<!-- <br>
+<hr class="dotted">
+<br> -->
+</body>
+</html>

@@ -13,6 +13,7 @@ import java.util.Optional;
 public class InventoryService {
 
     private final BikeRepository inventory;
+    public final String host = "http://localhost:9000";
 
     public InventoryService(BikeRepository inventory1) {
         this.inventory = inventory1;

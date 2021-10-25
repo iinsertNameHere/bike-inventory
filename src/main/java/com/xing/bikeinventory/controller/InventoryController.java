@@ -68,7 +68,7 @@ public class InventoryController {
         if (sessionPwd.equals(pwd)) {
             if (service.getAllBikes().size() > 0) {
                 service.removeAllBikes();
-                var resp = new CustomResponse(HttpStatus.OK, "Removed all Bikes.");
+                var resp = new CustomResponse(HttpStatus.OK, "Removed all Bikes. ");
                 return new ResponseEntity<>(resp, resp.httpStatus);
             }
             else
