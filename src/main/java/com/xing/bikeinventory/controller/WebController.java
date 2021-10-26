@@ -1,15 +1,18 @@
 package com.xing.bikeinventory.controller;
 
-import com.xing.bikeinventory.model.*;
+import com.xing.bikeinventory.model.BikeColor;
+import com.xing.bikeinventory.model.JBike;
 import com.xing.bikeinventory.service.InventoryService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 public class WebController {
@@ -22,7 +25,7 @@ public class WebController {
 
     @GetMapping("/")
     public String index(Model model) {
-        model.addAllAttributes("allBikes", service.getAllBikes());
+        model.addAttribute("allBikes", service.getAllBikes());
         return "index";
     }
 
@@ -35,14 +38,16 @@ public class WebController {
     }
 
     @PostMapping("/new")
-    public String newBikeSubmit(@ModelAttribute JBike jBike, Model model) {
+    public ModelAndView newBikeSubmit(@ModelAttribute JBike jBike, RedirectAttributes redirectAttributes) {
         if (jBike.hasError()) {
-            model.addAttribute("allColors", BikeColor.values());
-            model.addAttribute("newBike", new JBike());
-            model.addAttribute("error", "Failed to add your bike!");
-            return "new-bike";
+            ModelAndView model = new ModelAndView("new-bike");
+            model.addObject("allColors", BikeColor.values());
+            model.addObject("newBike", new JBike());
+            model.addObject("error", "Failed to add your bike!");
+            model.setStatus(HttpStatus.BAD_REQUEST);
+            return model;
         }
-        service.addBike(jBike);
-        return "redirect:/";
+        redirectAttributes.addFlashAttribute("msg", String.format("The id of your Bike is: %s", service.addBike(jBike)));
+        return new ModelAndView(new RedirectView("/"));
     }
 }

@@ -1,17 +1,24 @@
 <!DOCTYPE HTML>
-<html xmlns:th="https://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
 <head>
     <title>Getting Started: Handling Form Submission</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script>window.onload = function(){document.getElementById("add_bike").className = "nav-link active";}</script>
 </head>
 <body>
-<h1>Add Bike</h1>
-<form action="#" th:action="@{/new}" th:object="${newBike}" method="post">
-    <p>Brand: <input type="text" th:field="*{brand}" /></p>
-    <p>Gears: <input type="number" th:field="*{numberOfGears}" /></p>
-    <p>Color: <select th:field="*{color}"><option th:each="color: ${allColors}" th:value="${color}" th:text="${color}"></option></select></p>
-    <p><input type="submit" value="Add Bike" /> <input type="reset" value="Reset" /></p>
-</form>
-<p style="color: red" th:text="${error}"></p>
+<section layout:fragment="content">
+    <h1>Add Bike</h1>
+    <form action="#" th:action="@{/new}" th:object="${newBike}" method="post">
+        <div class="mt-3"><label>Brand: <input type="text" th:field="*{brand}" required="required"/></label></div>
+        <div class="mt-3"><label>Gears: <input type="number" min="1" th:field="*{numberOfGears}" required="required"/></label></div>
+        <div class="mt-3"><label>Color: <select th:field="*{color}" required="required">
+            <option th:each="color: ${allColors}" th:value="${color}" th:text="${color}"></option>
+        </select></label></div>
+        <br>
+        <p><input type="submit" class="btn btn-primary" value="Add Bike"/> <input type="reset" class="btn btn-secondary" value="Reset"/></p>
+    </form>
+    <p style="color: red" th:text="${error}"></p>
+</section>
 </body>
 </html>
