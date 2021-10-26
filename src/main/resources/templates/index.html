@@ -2,15 +2,12 @@
 <html xmlns:th="https://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-    <title>Bike Inventory Service</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <script>window.onload = function () {
-        document.getElementById("home").className = "nav-link active";
-    }</script>
+    <script>window.onload = function () {document.getElementById("home").className = "nav-link active";}</script>
 </head>
 <body>
 <section layout:fragment="content">
-    <table id="bike-table" class="table align-middle caption-top text-center">
+    <p style="color: darkcyan; text-align: center" th:if="${msg}" th:text="${msg}"></p>
+    <table th:if="${!#lists.isEmpty(allBikes)}" id="bike-table" class="table align-middle caption-top text-center">
         <caption>List of all Bikes</caption>
         <thead class="table-dark" id="tb-header">
         <tr>
@@ -28,21 +25,20 @@
             <td th:text="${bike.color}"></td>
             <td th:text="${bike.numberOfGears}"></td>
             <td>
-                <input type="button" class="btn btn-danger btn-sm" value="Remove" onclick="rm(this)" th:data-id="${bike.id}"/>
+                <div class="btn-group" role="group">
+                    <input type="button" class="btn btn-danger btn-sm" value="Remove" onclick="rm(this)" th:data-id="${bike.id}"/>
+                    <a class="btn btn-secondary btn-sm" th:href="@{~/editor/{bikeId}(bikeId=${bike.id})}">Edit</a>
+                </div>
             </td>
         </tr>
         </tbody>
     </table>
-    <br>
-    <div th:if="${msg}">
-        <p th:text="${msg}"></p>
-    </div>
-    <br>
+    <label style="color: red;" th:if="${#lists.isEmpty(allBikes)}">The Inventory is Empty!</label>
     <script>
         function rm(element) {
             var id = element.dataset.id;
             fetch(`/api/bike/${id}`, {method: "delete"}).then(() => {
-                document.getElementById(id).remove();
+                window.location.reload();
             })
         }
     </script>

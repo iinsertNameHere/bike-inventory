@@ -43,6 +43,16 @@ public class InventoryService {
         }
     }
 
+    public String updateBike(String id, JBike updatedBike) {
+        var bike = inventory.findById(id).get();
+        bike.brand = updatedBike.getBrand();
+        bike.color = updatedBike.getColor().toString();
+        bike.numberOfGears = updatedBike.getNumberOfGears();
+        inventory.save(bike);
+        System.out.println(String.format("Updated bike: '%s'", id));
+        return id;
+    }
+
     public boolean containsBike(String id) {
         return inventory.existsById(id);
     }

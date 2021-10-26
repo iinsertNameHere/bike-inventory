@@ -39,6 +39,16 @@ public class InventoryController {
         return new ResponseEntity<CustomResponse>(resp, resp.httpStatus);
     }
 
+    @RequestMapping(value = "/api/bike/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<CustomResponse> updateBike(@PathVariable String id, @RequestBody JBike updatedBike) {
+        var error = new CustomResponse(HttpStatus.BAD_REQUEST, String.format("No bike with id '%s' in inventory.", id));
+        var resp = new  CustomResponse_WithBikeId(HttpStatus.OK, "Updated your bike.", id);
+        if (!service.containsBike(id))
+            return new ResponseEntity<CustomResponse>(error, error.httpStatus);
+        service.updateBike(id, updatedBike);
+        return new ResponseEntity<CustomResponse>(resp, resp.httpStatus);
+    }
+
     @RequestMapping(value = "/api/bike/{id}", method = RequestMethod.GET)
     public ResponseEntity<RespType> getBikeById(@PathVariable(required = false) String id) {
         var error = new CustomResponse(HttpStatus.NOT_FOUND, String.format("No bike with id '%s' in inventory.", id));

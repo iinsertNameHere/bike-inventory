@@ -27,4 +27,12 @@ public class Bike implements RespType {
                 id, brand, color, numberOfGears
         );
     }
+
+    public JBike toJBike() {
+        var jBike = new JBike();
+        jBike.setBrand(this.brand);
+        jBike.setColor(BikeColor.valueOf(this.color));
+        jBike.setNumberOfGears(this.numberOfGears);
+        return jBike;
+    }
 }
