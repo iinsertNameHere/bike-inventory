@@ -22,16 +22,8 @@ public class WebController {
 
     @GetMapping("/")
     public String index(Model model) {
-        Map<String, Object> attr = new HashMap<>();
-        attr.put("allBikes", service.getAllBikes());
-        model.addAllAttributes(attr);
+        model.addAllAttributes("allBikes", service.getAllBikes());
         return "index";
-    }
-
-    @GetMapping("/{id}")
-    public String removeBike(@PathVariable String id) {
-        service.removeBike(id);
-        return "redirect:/";
     }
 
     @GetMapping("/new")
