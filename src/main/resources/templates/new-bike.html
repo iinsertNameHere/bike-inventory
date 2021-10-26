@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Handling Form Submission</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<h1>Add Bike</h1>
+<form action="#" th:action="@{/new}" th:object="${newBike}" method="post">
+    <p>Brand: <input type="text" th:field="*{brand}" /></p>
+    <p>Gears: <input type="number" th:field="*{numberOfGears}" /></p>
+    <p>Color: <select th:field="*{color}"><option th:each="color: ${allColors}" th:value="${color}" th:text="${color}"></option></select></p>
+    <p><input type="submit" value="Add Bike" /> <input type="reset" value="Reset" /></p>
+</form>
+<p style="color: red" th:text="${error}"></p>
+</body>
+</html>

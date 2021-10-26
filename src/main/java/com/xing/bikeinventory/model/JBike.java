@@ -2,23 +2,43 @@ package com.xing.bikeinventory.model;
 
 public class JBike implements RespType {
 
-    public String brand;
-    public BikeColor color;
-    public int numberOfGears;
-
-    public JBike() {}
-
-    public JBike(String brand, BikeColor color, int numberOfGears) {
-        this.brand = brand;
-        this.color = color;
-        this.numberOfGears = numberOfGears;
-    }
+    public String brand = "None";
+    public BikeColor color = BikeColor.None;
+    public int numberOfGears = 0;
 
     @Override
     public String toString() {
         return String.format(
                 "Bike{brand='%s', color='%s', numberOfGears=%s}",
-                brand, color, numberOfGears
+                getBrand(), getColor(), getNumberOfGears()
         );
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public BikeColor getColor() {
+        return color;
+    }
+
+    public void setColor(BikeColor color) {
+        this.color = color;
+    }
+
+    public int getNumberOfGears() {
+        return numberOfGears;
+    }
+
+    public void setNumberOfGears(int numberOfGears) {
+        this.numberOfGears = numberOfGears;
+    }
+
+    public boolean hasError() {
+        return (getBrand().equals("None") || color == BikeColor.None || numberOfGears <= 0);
     }
 }

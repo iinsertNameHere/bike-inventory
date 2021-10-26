@@ -16,33 +16,58 @@
             padding: 8px;
         }
 
-        tr:nth-child(even) {
-            background-color: #dddddd;
-        }
-
         /* Dotted border */
         hr.dotted {
             border-top: 3px dotted #bbb;
         }
+
+        .selected {
+            background-color: cadetblue;
+        }
+
     </style>
 </head>
 <body>
-<table>
+<table id="table">
     <tr>
         <th>_id:</th>
         <th>Brand:</th>
         <th>Color:</th>
         <th>Number Of Gears:</th>
     </tr>
-    <tr th:each="bike: ${allBikes}">
+    <tr th:each="bike: ${allBikes}" >
         <th th:text="${bike.id}"></th>
         <th th:text="${bike.brand}"></th>
         <th th:text="${bike.color}"></th>
         <th th:text="${bike.numberOfGears}"></th>
     </tr>
 </table>
-<!-- <br>
+<br>
 <hr class="dotted">
-<br> -->
+<input type="button" id="rm" value="Remove" onclick="rm_selected()" />
+<input type="button" id="add" value="Add" onclick="add_new()" />
+<br>
+<script>
+    var table = document.getElementById('table');
+    var selected = table.getElementsByClassName('selected');
+    table.onclick = highlight;
+
+    function highlight(e) {
+        if (selected[0]) selected[0].className = '';
+        e.target.parentNode.className = 'selected';
+    }
+
+    function rm_selected(){
+        var element = document.querySelectorAll('.selected');
+        if(element[0]!== undefined){
+            window.location.replace("/" + element[0].children[0].firstChild.data);
+        }
+    }
+
+    function add_new() {
+        window.location.href = "/new";
+    }
+
+</script>
 </body>
 </html>

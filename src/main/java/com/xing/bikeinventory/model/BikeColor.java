@@ -11,5 +11,6 @@ public enum BikeColor {
     violett,
     white,
     yellow,
-    gray
+    gray,
+    None
 }

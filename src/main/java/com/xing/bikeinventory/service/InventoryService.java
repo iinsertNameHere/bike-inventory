@@ -4,7 +4,6 @@ import com.xing.bikeinventory.model.Bike;
 import com.xing.bikeinventory.model.JBike;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +19,7 @@ public class InventoryService {
     }
 
     public String addBike(JBike newBike) {
-        Bike bike = new Bike(null, newBike.brand, newBike.color.toString(), newBike.numberOfGears);
+        Bike bike = new Bike(null, newBike.getBrand(), newBike.getColor().toString(), newBike.getNumberOfGears());
 
         inventory.save(bike);
 
