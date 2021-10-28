@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}">
+<head>
+    <title>Bike Inventory Login</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script>window.onload = function(){document.getElementById(some-id).className = "nav-link active";}</script>
+</head>
+<body>
+<section layout:fragment="content">
+    <div style="margin-top: 10%" class="d-flex justify-content-center align-items-center container">
+        <form class="form-signin col-sm-3 text-center" name="f" th:action="@{/login}" method="post">
+            <img class="mb-4" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Circle-icons-bike.svg/2048px-Circle-icons-bike.svg.png" alt="" width="72" height="72">
+            <h2 class="form-signin-heading" style="margin-bottom: 15%">Please sign in</h2>
+            <div th:if="${param.error}" class="alert alert-danger" role="alert">Bad credentials</div>
+            <p>
+                <input size="20" type="text" id="username" name="username" class="form-control" placeholder="Username" required="required" autofocus="">
+            </p>
+            <p>
+                <input size="20" type="password" id="password" name="password" class="form-control" placeholder="Password" required="required">
+            </p>
+            <button class="btn btn-primary btn-lg btn-block w-100" type="submit">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"/>
+                    <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+                </svg>
+                Sign in
+            </button>
+        </form>
+    </div>
+</section>
+</body>
+</html>

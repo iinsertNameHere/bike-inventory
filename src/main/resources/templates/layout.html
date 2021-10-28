@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Bike Inventory Service</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -9,11 +9,14 @@
 <header>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4" id="mainnav">
         <div class="container">
-            <a class="navbar-brand">Bike Inventory</a>
+            <a class="navbar-brand">
+                <img style="margin-bottom: 5px; margin-right: 5px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Circle-icons-bike.svg/2048px-Circle-icons-bike.svg.png" width="30" height="30">
+                Bike Inventory
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="collapse navbar-collapse" id="navbarCollapse" sec:authorize="isAuthenticated()">
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     <li class="nav-item">
                         <a class="nav-link" id="home" aria-current="page" href="/">Home</a>
@@ -22,6 +25,16 @@
                         <a class="nav-link" id="add_bike" href="/new">Add Bike</a>
                     </li>
                 </ul>
+            </div>
+            <div sec:authorize="isAuthenticated()">
+                <p class="h6" style="display:inline; color: darkgrey; margin-right: 10px" sec:authentication="name">user-name</p>
+                <a class="btn btn-outline-primary btn-sm" href="/logout">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"/>
+                        <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+                    </svg>
+                    Logout
+                </a>
             </div>
         </div>
     </nav>

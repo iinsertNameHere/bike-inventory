@@ -32,6 +32,11 @@ public class WebController {
         return "index";
     }
 
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
     @GetMapping("/new")
     public String newBikeForm(Model model) {
         model.addAttribute("allColors", BikeColor.values());

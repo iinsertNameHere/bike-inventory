@@ -2,6 +2,8 @@ package com.xing.bikeinventory.controller;
 
 import com.xing.bikeinventory.model.*;
 import com.xing.bikeinventory.service.InventoryService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,7 @@ public class InventoryController {
 
     private final InventoryService service;
     private final String pwd;
+    Logger logger = LoggerFactory.getLogger(InventoryController.class);
 
     private String getSaltString(int len) {
         String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890-_";
@@ -30,7 +33,9 @@ public class InventoryController {
     public InventoryController(InventoryService service) {
         this.service = service;
         this.pwd = getSaltString(18);
-        System.out.printf("API Key for this Session: '%s'\n", pwd);
+        logger.info("Generated API-Key with '18' chars");
+        logger.info("Session API-Key: '{}'", pwd);
+
     }
 
     @RequestMapping(value = "/api/bike", method = RequestMethod.POST)

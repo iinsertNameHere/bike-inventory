@@ -84,5 +84,4 @@ public class InventoryService {
     public int countBikesByNumOfGears(int numOfGears) {
         return (int)inventory.countByNumberOfGears(numOfGears);
     }
-
 }
