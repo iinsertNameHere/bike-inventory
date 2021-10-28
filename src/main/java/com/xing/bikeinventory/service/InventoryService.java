@@ -19,7 +19,7 @@ public class InventoryService {
     }
 
     public String addBike(JBike newBike) {
-        Bike bike = new Bike(null, newBike.getBrand(), newBike.getColor().toString(), newBike.getNumberOfGears());
+        Bike bike = new Bike(newBike.getBrand(), newBike.getColor().toString(), newBike.getNumberOfGears());
 
         inventory.save(bike);
 

@@ -11,10 +11,13 @@
         <thead class="table-dark" id="tb-header">
         <tr>
             <th scope="col" style="width: 20%">ID</th>
-            <th scope="col" style="width: 20%">Brand</th>
-            <th scope="col" style="width: 20%">Color</th>
-            <th scope="col" style="width: 20%">Gears</th>
-            <th scope="col" style="width: 20%">Actions</th>
+            <th scope="col" style="width: 10%">Brand</th>
+            <th scope="col" style="width: 10%">Color</th>
+            <th scope="col" style="width: 10%">Gears</th>
+            <th scope="col" style="width: 20%">Creation Date</th>
+            <th scope="col" style="width: 20%">Created By</th>
+            <th scope="col" style="width: 20%">Last Editor</th>
+            <th scope="col" style="width: 25%">Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -23,6 +26,9 @@
             <td th:text="${bike.brand}"></td>
             <td th:text="${bike.color}"></td>
             <td th:text="${bike.numberOfGears}"></td>
+            <td th:text="${bike.createdDate}"></td>
+            <td th:text="${bike.createdBy}"></td>
+            <td th:text="${bike.lastModifiedBy}"></td>
             <td>
                 <div class="btn-group" role="group">
                     <input type="button" class="btn btn-danger btn-sm" value="Remove" onclick="rm(this)" th:data-id="${bike.id}"/>
