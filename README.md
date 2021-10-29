@@ -1,51 +1,52 @@
-# Coding Challenge - Bike Inventory
+# Bike inventory
 
-- [x] Finished
+Deployed [here](https://bikeinventory-intern.herokuapp.com/).
 
-Hello and welcome to this coding challenge. In this challenge, you are tasked to build a small micro-service to handle the inventory of a bike repair shop.
+## How to host lokal (on Linux):
 
-## Task
-You will be building a micro-service using Spring Boot and Java to handle the inventory of a bike repair shop. 
+* Clone the git repo.
+```shell
+git clone https://github.com/iinsertNameHere/bike-inventory
+```
 
-This service should expose the following REST endpoints:
-- POST /bike/new
-	- adds a new bike
-	- returns the id of this new bike
-- GET /bike?id={id}
-	- returns the bike with this id 
-- GET /bike/all
-	- returns a list of all bikes
-- DELETE /bike?id={id}
-	- deletes the bike with this id from the inventory
+* Go into the cloned repo.
+```shell
+cd /bike-inventory
+```
 
-A bike should have the following fields:
-- Id
-- Brand 
-- Color
-- Size
-- Number of gears
+* Start the app with maven.
+```shell
+./mvnw spring-boot:run
+```
 
+* Open http://localhost:9000 in your browser.
 
-Please use the already existing project structure. 
+* You can finde the user Details in:
+```
+src/main/resources/application.yml
+```
+---
+## DB Manager (on Linux):
 
-Write clean code.
+#### 1:
+Go into the cloned git repo.
 
-Test your code with unit tests.
+#### 2:
+```shell
+heroku config:get DATABASE_URL | xargs pgweb --url
+```
+---
+## Deploy on heroku (on Linux):
 
-## Additional Notes
-
-This micro-service is just responsible for handling the bikes that are currently in the bike repair shop. Don't add other functionality like billing systems, customer handling, repair tasks or similar. A frontend is also not required.
-
-Please use Spring Boot and Java to solve this challenge.
-
-Feel free to approach us anytime if anything is unclear.
-
-### Useful information:
-
-Spring Boot: https://spring.io/projects/spring-boot
-
-REST Services with Spring: https://spring.io/guides/tutorials/rest/
-
-Lombok: https://projectlombok.org/
-
-
+#### 1:
+* install heroku cli
+* run commands to login and create app and postgresql
+```shell
+heroku login
+heroku create
+heroku addons:create heroku-postgresql
+```
+* configure java 11 by placing the file `system.properties` with the following content
+```
+java.runtime.version=11 
+```
