@@ -7,9 +7,11 @@ import com.xing.bikeinventory.service.InventoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,17 +36,21 @@ public class WebController {
         this.service = service;
     }
 
-    private String admin = "service.admin";
-
     @GetMapping("/")
     public String index(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth.getName().equals(admin)) {
+        if (isAdmin()) {
             model.addAttribute("allBikes", service.getAllBikes());
             return "index";
         }
-        model.addAttribute("allBikes", service.getBikesByOwner(auth.getName()));
+        model.addAttribute("allBikes", service.getBikesByOwner(SecurityContextHolder.getContext().getAuthentication().getName()));
         return "index";
+    }
+
+    private boolean isAdmin() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getAuthorities().stream().anyMatch(authority -> {
+            return authority.getAuthority().equals("ROLE_ADMIN");
+        });
     }
 
     @GetMapping("/login")
@@ -69,7 +75,7 @@ public class WebController {
         ModelAndView model = new ModelAndView("editor");
         model.addObject("allColors", BikeColor.values());
         model.addObject("newBike", service.getBikeById(id).get().toJBike());
-        if (auth.getName().equals(admin)) {
+        if (isAdmin()) {
             model.addObject("isAdmin", true);
             model.addObject("allStates", BikeState.values());
         }
@@ -87,7 +93,7 @@ public class WebController {
             ModelAndView model = new ModelAndView("editor");
             model.addObject("allColors", BikeColor.values());
             model.addObject("newBike", service.getBikeById(id).get().toJBike());
-            if (auth.getName().equals(admin)) {
+            if (isAdmin()) {
                 model.addObject("isAdmin", true);
                 model.addObject("allStates", BikeState.values());
             }
