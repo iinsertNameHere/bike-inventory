@@ -61,7 +61,7 @@ public class WebController {
     }
 
     @GetMapping("/editor/{id}")
-    public ModelAndView editBike(@PathVariable String id, RedirectAttributes redirectAttributes) {
+    public ModelAndView editBike(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!service.containsBike(id)) {
             return new ModelAndView(new RedirectView("/"));
@@ -78,7 +78,7 @@ public class WebController {
     }
 
     @PostMapping("/editor/{id}")
-    public ModelAndView editBike(@PathVariable String id, @ModelAttribute JBike jBike, RedirectAttributes redirectAttributes) {
+    public ModelAndView editBike(@PathVariable Long id, @ModelAttribute JBike jBike, RedirectAttributes redirectAttributes) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!service.containsBike(id)) {
             return new ModelAndView(new RedirectView("/"));

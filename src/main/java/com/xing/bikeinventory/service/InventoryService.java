@@ -18,7 +18,7 @@ public class InventoryService {
         this.inventory = inventory1;
     }
 
-    public String addBike(JBike newBike) {
+    public Long addBike(JBike newBike) {
         Bike bike = new Bike(newBike.getBrand(), newBike.getColor().toString(), newBike.getNumberOfGears(),  newBike.getState().toString());
 
         inventory.save(bike);
@@ -31,7 +31,7 @@ public class InventoryService {
         return inventory.findAll();
     }
 
-    public void removeBike(String bikeId) {
+    public void removeBike(Long bikeId) {
         inventory.deleteById(bikeId);
         System.out.printf("Removed bike '%s' from inventory.%n", bikeId);
     }
@@ -43,7 +43,7 @@ public class InventoryService {
         }
     }
 
-    public String updateBike(String id, JBike updatedBike) {
+    public Long updateBike(Long id, JBike updatedBike) {
         var bike = inventory.findById(id).get();
         bike.brand = updatedBike.getBrand();
         bike.color = updatedBike.getColor().toString();
@@ -54,11 +54,11 @@ public class InventoryService {
         return id;
     }
 
-    public boolean containsBike(String id) {
+    public boolean containsBike(Long id) {
         return inventory.existsById(id);
     }
 
-    public Optional<Bike> getBikeById(String id) {
+    public Optional<Bike> getBikeById(Long id) {
         return inventory.findById(id);
     }
 

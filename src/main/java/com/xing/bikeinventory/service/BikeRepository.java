@@ -3,10 +3,11 @@ package com.xing.bikeinventory.service;
 import java.util.List;
 
 import com.xing.bikeinventory.model.Bike;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.CrudRepository;
 
-public interface BikeRepository extends MongoRepository<Bike, String> {
+public interface BikeRepository extends CrudRepository<Bike, Long> {
 
+    List<Bike> findAll();
     List<Bike> findAllByColorIgnoreCase(String color);
     long countByColorIgnoreCase(String color);
     List<Bike> findAllByBrandIgnoreCase(String brand);

@@ -45,7 +45,7 @@ public class InventoryController {
     }
 
     @RequestMapping(value = "/api/bike/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<CustomResponse> updateBike(@PathVariable String id, @RequestBody JBike updatedBike) {
+    public ResponseEntity<CustomResponse> updateBike(@PathVariable Long id, @RequestBody JBike updatedBike) {
         var error = new CustomResponse(HttpStatus.BAD_REQUEST, String.format("No bike with id '%s' in inventory.", id));
         var resp = new  CustomResponse_WithBikeId(HttpStatus.OK, "Updated your bike.", id);
         if (!service.containsBike(id))
@@ -55,7 +55,7 @@ public class InventoryController {
     }
 
     @RequestMapping(value = "/api/bike/{id}", method = RequestMethod.GET)
-    public ResponseEntity<RespType> getBikeById(@PathVariable(required = false) String id) {
+    public ResponseEntity<RespType> getBikeById(@PathVariable Long id) {
         var error = new CustomResponse(HttpStatus.NOT_FOUND, String.format("No bike with id '%s' in inventory.", id));
         var bike = service.getBikeById(id);
         if (bike.isEmpty())
@@ -64,12 +64,12 @@ public class InventoryController {
     }
 
     @RequestMapping(value = "/api/bike", method = RequestMethod.GET)
-    public Collection<Bike> showAllBikes() {
+    public Iterable<Bike> showAllBikes() {
         return service.getAllBikes();
     }
 
     @RequestMapping(value = "/api/bike/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<CustomResponse> removeBike(@PathVariable String id) {
+    public ResponseEntity<CustomResponse> removeBike(@PathVariable Long id) {
         var error = new CustomResponse(HttpStatus.BAD_REQUEST, String.format("No bike with id '%s' in inventory.", id));
         var resp = new  CustomResponse_WithBikeId(HttpStatus.OK, "Removed bike from inventory.", id);
         if (!service.containsBike(id))

@@ -13,7 +13,7 @@ import java.time.Instant;
 public class Bike implements RespType {
     
     @Id
-    public String id;
+    public Long id;
 
     @CreatedDate
     public Instant createdDate;
