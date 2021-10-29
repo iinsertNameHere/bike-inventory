@@ -19,7 +19,7 @@ public class InventoryService {
     }
 
     public String addBike(JBike newBike) {
-        Bike bike = new Bike(newBike.getBrand(), newBike.getColor().toString(), newBike.getNumberOfGears());
+        Bike bike = new Bike(newBike.getBrand(), newBike.getColor().toString(), newBike.getNumberOfGears(),  newBike.getState().toString());
 
         inventory.save(bike);
 
@@ -48,6 +48,7 @@ public class InventoryService {
         bike.brand = updatedBike.getBrand();
         bike.color = updatedBike.getColor().toString();
         bike.numberOfGears = updatedBike.getNumberOfGears();
+        bike.state = updatedBike.state.toString();
         inventory.save(bike);
         System.out.println(String.format("Updated bike: '%s'", id));
         return id;
@@ -83,5 +84,9 @@ public class InventoryService {
 
     public int countBikesByNumOfGears(int numOfGears) {
         return (int)inventory.countByNumberOfGears(numOfGears);
+    }
+
+    public List<Bike> getBikesByOwner(String owner) {
+        return inventory.findAllByCreatedBy(owner);
     }
 }

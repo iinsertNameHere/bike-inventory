@@ -1,9 +1,16 @@
 package com.xing.bikeinventory.controller;
 
+import com.xing.bikeinventory.model.Bike;
 import com.xing.bikeinventory.model.BikeColor;
 import com.xing.bikeinventory.model.JBike;
 import com.xing.bikeinventory.service.InventoryService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -26,9 +34,16 @@ public class WebController {
         this.service = service;
     }
 
+    private String admin = "service.admin";
+
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("allBikes", service.getAllBikes());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth.getName().equals(admin)) {
+            model.addAttribute("allBikes", service.getAllBikes());
+            return "index";
+        }
+        model.addAttribute("allBikes", service.getBikesByOwner(auth.getName()));
         return "index";
     }
 
@@ -47,18 +62,24 @@ public class WebController {
 
     @GetMapping("/editor/{id}")
     public ModelAndView editBike(@PathVariable String id, RedirectAttributes redirectAttributes) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!service.containsBike(id)) {
             return new ModelAndView(new RedirectView("/"));
         }
         ModelAndView model = new ModelAndView("editor");
         model.addObject("allColors", BikeColor.values());
         model.addObject("newBike", service.getBikeById(id).get().toJBike());
+        if (auth.getName().equals(admin)) {
+            model.addObject("isAdmin", true);
+            model.addObject("allStates", BikeState.values());
+        }
         model.setStatus(HttpStatus.OK);
         return model;
     }
 
     @PostMapping("/editor/{id}")
     public ModelAndView editBike(@PathVariable String id, @ModelAttribute JBike jBike, RedirectAttributes redirectAttributes) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!service.containsBike(id)) {
             return new ModelAndView(new RedirectView("/"));
         }
@@ -66,6 +87,10 @@ public class WebController {
             ModelAndView model = new ModelAndView("editor");
             model.addObject("allColors", BikeColor.values());
             model.addObject("newBike", service.getBikeById(id).get().toJBike());
+            if (auth.getName().equals(admin)) {
+                model.addObject("isAdmin", true);
+                model.addObject("allStates", BikeState.values());
+            }
             model.addObject("error", "Failed to update your bike!");
             model.setStatus(HttpStatus.BAD_REQUEST);
             return model;

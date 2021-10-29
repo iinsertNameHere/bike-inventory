@@ -13,4 +13,5 @@ public interface BikeRepository extends MongoRepository<Bike, String> {
     long countByBrandIgnoreCase(String brand);
     List<Bike> findAllByNumberOfGears(int numberOfGears);
     long countByNumberOfGears(int numberOfGears);
+    List<Bike> findAllByCreatedBy(String name);
 }

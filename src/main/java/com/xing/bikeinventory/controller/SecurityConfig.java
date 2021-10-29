@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -16,13 +18,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("joona.norhausen").password(passwordEncoder().encode("password")).roles("ADMIN")
+                .withUser("service.admin")
+                .password(passwordEncoder().encode("admin-pwd"))
+                .roles("ADMIN")
                 .and()
-                .withUser("normal.user").password(passwordEncoder().encode("password")).roles("USER");
+                .withUser("joona.norhausen")
+                .password(passwordEncoder().encode("password"))
+                .roles("USER")
+                .and()
+                .withUser("sabrina.peterhänsel")
+                .password(passwordEncoder().encode("finchen07"))
+                .roles("USER");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http.csrf().disable()
                 .formLogin().loginPage("/login").permitAll()
                 .and()

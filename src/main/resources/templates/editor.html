@@ -12,6 +12,9 @@
         <div class="mt-3"><label>Color: <select th:field="*{color}" required="required">
             <option th:each="color: ${allColors}" th:value="${color}" th:text="${color}"></option>
         </select></label></div>
+        <div class="mt-3", th:if="${isAdmin}"><label>State: <select th:field="*{state}" required="required">
+            <option th:each="state: ${allStates}" th:value="${state}" th:text="${state}"></option>
+        </select></label></div>
         <br>
         <p><input type="submit" class="btn btn-primary" value="Update"/></p>
     </form>
