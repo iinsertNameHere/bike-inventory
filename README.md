@@ -28,17 +28,15 @@ src/main/resources/application.yml
 ---
 ## DB Manager (on Linux):
 
-#### 1:
-Go into the cloned git repo.
+* Go into the cloned git repo.
 
-#### 2:
+* Start pgWeb.
 ```shell
 heroku config:get DATABASE_URL | xargs pgweb --url
 ```
 ---
 ## Deploy on heroku (on Linux):
 
-#### 1:
 * install heroku cli
 * run commands to login and create app and postgresql
 ```shell
@@ -49,4 +47,9 @@ heroku addons:create heroku-postgresql
 * configure java 11 by placing the file `system.properties` with the following content
 ```
 java.runtime.version=11 
+```
+
+* Push and Deploy.
+```shell
+git push heroku master
 ```
