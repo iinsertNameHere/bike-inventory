@@ -16,19 +16,14 @@ import java.util.List;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
+    private UserProperties userProperties;
+
+    @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("service.admin")
-                .password(passwordEncoder().encode("admin-pwd"))
-                .roles("ADMIN")
-                .and()
-                .withUser("joona.norhausen")
-                .password(passwordEncoder().encode("password"))
-                .roles("USER")
-                .and()
-                .withUser("sabrina.peterhänsel")
-                .password(passwordEncoder().encode("finchen07"))
-                .roles("USER");
+        System.out.println("Number of users: " + userProperties.getList().size());
+        var inMemoryAuthentication = auth.inMemoryAuthentication();
+        for (var user : userProperties.getList())
+            inMemoryAuthentication.withUser(user.getName()).password(passwordEncoder().encode(user.getPassword())).roles(user.getRole());
     }
 
     @Override
